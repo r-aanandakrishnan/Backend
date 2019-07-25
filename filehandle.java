@@ -37,6 +37,69 @@ public class JsonReader implements Serializable{
 public class filehandle
 {
   private static final String filepath="C:\\Users\\krishna\\Desktop\\obj";
+  public static int readandwrite(JsonReader js)
+  {
+     try {
+ 
+            FileInputStream fileIn = new FileInputStream(filepath);
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+            
+            while(objectIn.readObject()!=NULL)
+            {
+              Object obj = objectIn.readObject();
+              if(obj.key==js.key)
+              {
+                System.out.println("Object Already exists");
+                return 1;
+              }
+            }
+
+ 
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+  }
+  public static int delete(JsonReader js)
+  {
+    try {
+ 
+            FileInputStream fileIn = new FileInputStream(filepath);
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+            
+            while(objectIn.readObject()!=NULL)
+            {
+              Object obj = objectIn.readObject();
+              if(obj.key==js.key)
+              {
+                System.out.println("Object Deleted");
+                obj.key="";
+                obj.value="";
+              }
+            }
+
+ 
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+      }
+     
+ public static int write(JsonReader js)
+  {
+      try {
+ 
+            FileOutputStream fileOut = new FileOutputStream(filepath);
+            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+            objectOut.writeObject(serObj);
+            objectOut.close();
+            System.out.println("The Object  was succesfully written to a file");
+ 
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+   }
+
   public static void main(String[] args) throws IOException, JSONException {
     JSONObject json = readJsonFromUrl("https://url");
     System.out.println(json.toString());
@@ -44,5 +107,9 @@ public class filehandle
     String t=json.get("value");
     filehandle f=new filehandle();
     JsonReader js= new JsonReader(s,t);
-    
+    if(f.readandwrite(js))
+    {
+      f.write();
+    }
+    f.delete();
 }
